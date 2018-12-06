@@ -1,0 +1,39 @@
+server:
+  port: 10086
+
+spring:
+  datasource:
+    #driver-class-name: com.mysql.jdbc.Driver
+    #url: jdbc:mysql://localhost:3306/center_manager_sys?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/quick_batch?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 123456
+    #password: Wanguo8102
+    type: com.alibaba.druid.pool.DruidDataSource
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+    show-sql: true
+  redis:
+    database: 10
+    host: 120.78.153.10
+    port: 6379
+    password: badguy
+    lettuce:
+      shutdown-timeout: 100ms
+  #不加这个会出现 Spring Data Redis - Could not safely identify store assignment for repository candidate interface
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+weChat:
+  appId: wx35c421c9e951f009
+  appSecret: aef06d47aabbdd192268c58e38f70470
+
+qiNiu:
+  accessKey: 3P4RflUg3YzzXFrFiCVo6_CCpfPlaBIIxoP5H7C-
+  secretKey: k_e5DcLCwo01oO__dv2rlXnddSIuL7jWjPcA8dQn
+  bucket: badguy
+  domain: https://qiniu.great-info.tech/
