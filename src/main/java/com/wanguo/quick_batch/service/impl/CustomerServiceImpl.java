@@ -60,6 +60,9 @@ public class CustomerServiceImpl implements CustomerService {
                 customer = new Customer();
                 customer.setOpenid(openid);
                 customer.setSessionKey(sessionKey);
+                customer.setLotteryOpportunity(0);
+                customer.setUsedLotteryOpportunity(0);
+                customer.setWhetherWinning(false);
                 customer.setCreateTime(new Date());
             } else {
                 customer.setSessionKey(sessionKey);
@@ -69,8 +72,13 @@ public class CustomerServiceImpl implements CustomerService {
             tokenService.saveAccessToken(accessToken);
             return ResJson.successJson("登录成功", accessToken);
         } else {
+            Customer customer = accessToken.getCustomer();
+            customer.setSessionKey(sessionKey);
+            customerJpa.save(customer);
             // 刷新缓存
-            tokenService.refreshAccessToken(MD5Util.md5(AccessToken.CUSTOMER_TOKEN_SALT + ":" + openid));
+            //tokenService.refreshAccessToken(MD5Util.md5(AccessToken.CUSTOMER_TOKEN_SALT + ":" + openid));
+            accessToken.setCustomer(customer);
+            tokenService.saveAccessToken(accessToken);
             return ResJson.successJson("登录成功", accessToken);
         }
     }
@@ -106,6 +114,9 @@ public class CustomerServiceImpl implements CustomerService {
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
+        System.out.println("encryptedData:" + encryptedData);
+        System.out.println("iv:" + iv);
+        System.out.println("sessionKey:" + customer.getSessionKey());
 
         String decrypt = AES.wxDecrypt(encryptedData, customer.getSessionKey(), iv);
         System.out.println(decrypt);
@@ -123,7 +134,7 @@ public class CustomerServiceImpl implements CustomerService {
             tokenService.saveAccessToken(accessToken);
         }
 
-        return ResJson.successJson("保存用户授权信息成功");
+        return ResJson.successJson("保存用户手机号码成功");
     }
 
     @Override

@@ -36,4 +36,10 @@ public class Customer {
     private String contactNumber;
 
     private String shippingAddress;
+
+    private Integer lotteryOpportunity;
+
+    private Integer usedLotteryOpportunity;
+
+    private Boolean whetherWinning;
 }

@@ -10,8 +10,6 @@ import com.wanguo.quick_batch.utils.ResJson;
  */
 public interface QRCodeService {
 
-    String genQRCode(String accessToken, String scene, String page);
-
     ResJson genQRCode(JSONObject jsonObject);
 
     ResJson scanQRCode(JSONObject jsonObject);

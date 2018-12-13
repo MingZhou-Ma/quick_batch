@@ -14,10 +14,10 @@ import java.security.Security;
 
 public class AES {
     // 算法名
-    public static final String KEY_NAME = "AES";
+    private static final String KEY_NAME = "AES";
     // 加解密算法/模式/填充方式
     // ECB模式只用密钥即可对数据进行加密解密，CBC模式需要添加一个iv
-    public static final String CIPHER_ALGORITHM = "AES/CBC/PKCS7Padding";
+    private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS7Padding";
 
     /**
      * 微信 数据解密<br/>
@@ -35,7 +35,6 @@ public class AES {
         byte[] encrypted64 = Base64.decodeBase64(encrypted);
         byte[] key64 = Base64.decodeBase64(session_key);
         byte[] iv64 = Base64.decodeBase64(iv);
-        byte[] data;
         try {
             init();
             json = new String(decrypt(encrypted64, key64, generateIV(iv64)));
@@ -48,7 +47,7 @@ public class AES {
     /**
      * 初始化密钥
      */
-    public static void init() throws Exception {
+    private static void init() throws Exception {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         KeyGenerator.getInstance(KEY_NAME).init(128);
     }
@@ -56,7 +55,7 @@ public class AES {
     /**
      * 生成iv
      */
-    public static AlgorithmParameters generateIV(byte[] iv) throws Exception {
+    private static AlgorithmParameters generateIV(byte[] iv) throws Exception {
         // iv 为一个 16 字节的数组，这里采用和 iOS 端一样的构造方法，数据全为0
         // Arrays.fill(iv, (byte) 0x00);
         AlgorithmParameters params = AlgorithmParameters.getInstance(KEY_NAME);
@@ -67,7 +66,7 @@ public class AES {
     /**
      * 生成解密
      */
-    public static byte[] decrypt(byte[] encryptedData, byte[] keyBytes, AlgorithmParameters iv)
+    private static byte[] decrypt(byte[] encryptedData, byte[] keyBytes, AlgorithmParameters iv)
             throws Exception {
         Key key = new SecretKeySpec(keyBytes, KEY_NAME);
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);

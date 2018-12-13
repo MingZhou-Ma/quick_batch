@@ -56,6 +56,9 @@ public class FriendBoostServiceImpl implements FriendBoostService {
             return ResJson.errorAccessToken();
         }
         Customer initiator = customerJpa.getOne(id);
+        if (null == initiator) {
+            return ResJson.failJson(4000, "活动发起者不存在", null);
+        }
         if (customer == initiator) {
             return ResJson.failJson(4000, "不能给自己助力", null);
         }

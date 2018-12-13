@@ -34,24 +34,6 @@ public class QRCodeServiceImpl implements QRCodeService {
     }
 
     @Override
-    public String genQRCode(String accessToken, String scene, String page) {
-        QRCode qrCode = qrCodeJpa.findBySceneAndPage(scene, page);
-        if (null != qrCode) {
-            return qrCode.getPath();
-        }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("scene", scene);
-        jsonObject.put("page", page);
-        String jsonParam = jsonObject.toJSONString();
-        InputStream result = OkHttpUtil.post("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken, jsonParam);
-        String path = QiNiuUploadUtil.upload(result);
-        if (!StringUtils.isEmpty(path)) {
-            return path;
-        }
-        return null;
-    }
-
-    @Override
     public ResJson genQRCode(JSONObject jsonObject) {
         String token = jsonObject.getString("token");
         String scene = jsonObject.getString("scene");
@@ -61,16 +43,24 @@ public class QRCodeServiceImpl implements QRCodeService {
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
+        QRCode qrCode = qrCodeJpa.findBySceneAndPage(scene, page);
+        if (null != qrCode) {
+            return ResJson.successJson("生成微信二维码成功", qrCode.getPath());
+        }
         String accessToken = WeChatInterfaceCallCredentials.getWeChatAccessToken();
         if (StringUtils.isEmpty(accessToken)) {
             return ResJson.failJson(4000, "获取微信接口调用凭证失败", null);
         }
-        String path = genQRCode(accessToken, scene, page);
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("scene", scene);
+        paramObject.put("page", page);
+        String paramString = paramObject.toJSONString();
+        InputStream result = OkHttpUtil.post("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken, paramString);
+        String path = QiNiuUploadUtil.upload(result);
         if (StringUtils.isEmpty(path)) {
             return ResJson.failJson(4000, "生成微信二维码失败", null);
         }
-
-        QRCode qrCode = new QRCode();
+        qrCode = new QRCode();
         qrCode.setScene(scene);
         qrCode.setPage(page);
         qrCode.setPath(path);

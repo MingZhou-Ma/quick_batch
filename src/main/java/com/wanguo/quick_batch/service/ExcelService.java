@@ -14,4 +14,6 @@ public interface ExcelService {
 
     ResJson exportXlsx(HttpServletResponse response);
 
+    ResJson readExcel();
+
 }

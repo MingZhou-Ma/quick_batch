@@ -90,7 +90,7 @@ public class QiNiuUploadUtil {
         //...其他参数参考类注释
         UploadManager uploadManager = new UploadManager(cfg);
         try {
-            String key = UUID.randomUUID() + ".jpg";
+            String key = UUID.randomUUID() + ".png";
             //默认不指定key的情况下，以文件内容的hash值作为文件名
             Response response = uploadManager.put(is, key, getUpToken(), null, null);
 

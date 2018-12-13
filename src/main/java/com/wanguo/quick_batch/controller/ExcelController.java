@@ -1,16 +1,12 @@
 package com.wanguo.quick_batch.controller;
 
 import com.wanguo.quick_batch.service.ExcelService;
-import com.wanguo.quick_batch.service.QRCodeService;
-import com.wanguo.quick_batch.utils.ExcelUtil;
 import com.wanguo.quick_batch.utils.ResJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * 描述：
@@ -33,11 +29,8 @@ public class ExcelController {
     }
 
     @RequestMapping(value = "/api/excel/read")
-    public ResJson exportXlsx() {
-
-            ExcelUtil.read(0,1);
-
-        return null;
+    public ResJson readExcel() {
+        return excelService.readExcel();
     }
 
 
