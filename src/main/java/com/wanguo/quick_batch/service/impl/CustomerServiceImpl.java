@@ -40,6 +40,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public ResJson login(JSONObject jsonObject) {
+        System.out.println(appId);
+        System.out.println(appSecret);
         String code = jsonObject.getString("code");
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId + "&secret=" + appSecret + "&grant_type=authorization_code&js_code=" + code;
         String result = OkHttpUtil.get(url);
