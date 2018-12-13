@@ -34,8 +34,8 @@ spring:
         enabled: false
 
 weChat:
-  appId: wxdfb84b35c9c4321b
-  appSecret: c5ae578f0c1fd1a6287bfb562556d9f1
+  appId: wxece569f498719ea0
+  appSecret: 69e7c579c573d343bcf681d67033e9b7
 
 qiNiu:
   accessKey: 3P4RflUg3YzzXFrFiCVo6_CCpfPlaBIIxoP5H7C-
