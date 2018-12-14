@@ -42,4 +42,6 @@ public class Customer {
     private Integer usedLotteryOpportunity;
 
     private Boolean whetherWinning;
+
+    private Boolean whetherAuthInfo;
 }

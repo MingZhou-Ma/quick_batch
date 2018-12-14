@@ -74,7 +74,7 @@ public class FriendBoostServiceImpl implements FriendBoostService {
         friendBoostJpa.save(friendBoost);
 
         // 助力完获取代金券
-        Prize prize = prizeJpa.getOne(7);
+        Prize prize = prizeJpa.getOne(9);
 
         WinningRecord winningRecord = new WinningRecord();
         winningRecord.setCode(RandomUtil.generateString(6));

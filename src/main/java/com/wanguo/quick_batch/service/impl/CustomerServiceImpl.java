@@ -65,6 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setLotteryOpportunity(0);
                 customer.setUsedLotteryOpportunity(0);
                 customer.setWhetherWinning(false);
+                customer.setWhetherAuthInfo(false);
                 customer.setCreateTime(new Date());
             } else {
                 customer.setSessionKey(sessionKey);
@@ -95,6 +96,7 @@ public class CustomerServiceImpl implements CustomerService {
             return ResJson.errorAccessToken();
         }
         customer.setNickname(nickname);
+        customer.setWhetherAuthInfo(true);
         customerJpa.save(customer);
 
         AccessToken accessToken = tokenService.getAccessToken(token);
@@ -104,6 +106,21 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return ResJson.successJson("保存用户授权信息成功");
+    }
+
+    @Override
+    public ResJson whetherAuthInfo(JSONObject jsonObject) {
+        String token = jsonObject.getString("token");
+
+        Customer customer = tokenService.getCustomerByToken(token);
+        if (null == customer) {
+            return ResJson.errorAccessToken();
+        }
+
+        if (customer.getWhetherAuthInfo()) {
+            return ResJson.successJson("已经授权过", 1);
+        }
+        return ResJson.successJson("还未授权过", 0);
     }
 
     @Override
