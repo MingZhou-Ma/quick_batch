@@ -176,7 +176,8 @@ public class LotteryServiceImpl implements LotteryService {
         }
         HashMap<String, Object> map = new HashMap<>();
         // 中奖
-        if (index == 0 || index == 1 || index == 2 || index == 3 || index == 4 || index == 5) {
+        //if (index == 0 || index == 1 || index == 2 || index == 3 || index == 4 || index == 5) {
+        if (index == 0 || index == 1 || index == 2 || index == 4 || index == 5 || index == 6) {
 
             // 如果库存为0
             if (prize.getStock() == 0) {
@@ -196,7 +197,8 @@ public class LotteryServiceImpl implements LotteryService {
             } else {
                 WinningRecord winningRecord = new WinningRecord();
                 // 如果是券，则生成券码
-                if (index == 4 || index == 5) {
+                //if (index == 4 || index == 5) {
+                if (index == 2   || index == 5) {
                     winningRecord.setCode(RandomUtil.generateString(6));
                 }
                 winningRecord.setCreateTime(new Date());
