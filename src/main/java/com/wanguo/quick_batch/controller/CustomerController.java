@@ -38,6 +38,11 @@ public class CustomerController {
         return customerService.saveCustomerAuthInfo(jsonObject);
     }
 
+    @RequestMapping(value = "/api/customer/authPhone/save", method = RequestMethod.POST)
+    public ResJson saveCustomerAuthPhone(@RequestBody JSONObject jsonObject) {
+        return customerService.saveCustomerAuthPhone(jsonObject);
+    }
+
     @RequestMapping(value = "/api/customer/phone/save", method = RequestMethod.POST)
     public ResJson saveCustomerPhone(@RequestBody JSONObject jsonObject) {
         return customerService.saveCustomerPhone(jsonObject);

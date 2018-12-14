@@ -107,7 +107,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResJson saveCustomerPhone(JSONObject jsonObject) {
+    public ResJson saveCustomerAuthPhone(JSONObject jsonObject) {
         String token = jsonObject.getString("token");
         String encryptedData = jsonObject.getString("encryptedData");
         String iv = jsonObject.getString("iv");
@@ -128,6 +128,28 @@ public class CustomerServiceImpl implements CustomerService {
         JSONObject decryptObj = JSON.parseObject(decrypt);
         String phoneNumber = decryptObj.getString("phoneNumber");
         customer.setPhone(phoneNumber);
+        customerJpa.save(customer);
+
+        AccessToken accessToken = tokenService.getAccessToken(token);
+        if (null != accessToken) {
+            accessToken.setCustomer(customer);
+            tokenService.saveAccessToken(accessToken);
+        }
+
+        return ResJson.successJson("保存用户手机号码成功");
+    }
+
+    @Override
+    public ResJson saveCustomerPhone(JSONObject jsonObject) {
+        String token = jsonObject.getString("token");
+        String phone = jsonObject.getString("phone");
+
+        Customer customer = tokenService.getCustomerByToken(token);
+        if (null == customer) {
+            return ResJson.errorAccessToken();
+        }
+
+        customer.setPhone(phone);
         customerJpa.save(customer);
 
         AccessToken accessToken = tokenService.getAccessToken(token);
