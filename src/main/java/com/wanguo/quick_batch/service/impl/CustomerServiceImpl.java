@@ -66,7 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setUsedLotteryOpportunity(0);
                 customer.setWhetherWinning(false);
                 customer.setWhetherAuthInfo(false);
-                customer.setWhetherFillShippingAddress(false);
+                customer.setWhetherFillDeliveryInfo(false);
                 customer.setCreateTime(new Date());
             } else {
                 customer.setSessionKey(sessionKey);
@@ -203,14 +203,10 @@ public class CustomerServiceImpl implements CustomerService {
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
-        if (customer.getWhetherFillShippingAddress()) {
-            return ResJson.failJson(4000, "已经保存过收货地址", customer);
-        }
-
         customer.setReceiver(receiver);
         customer.setContactNumber(contactNumber);
         customer.setShippingAddress(shippingAddress);
-        customer.setWhetherFillShippingAddress(true);
+        customer.setWhetherFillDeliveryInfo(true);
         customerJpa.save(customer);
 
         AccessToken accessToken = tokenService.getAccessToken(token);
@@ -220,6 +216,21 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return ResJson.successJson("保存用户收货信息成功", customer);
+    }
+
+    @Override
+    public ResJson whetherFillDeliveryInfo(JSONObject jsonObject) {
+        String token = jsonObject.getString("token");
+
+        Customer customer = tokenService.getCustomerByToken(token);
+        if (null == customer) {
+            return ResJson.errorAccessToken();
+        }
+
+        if (customer.getWhetherFillDeliveryInfo()) {
+            return ResJson.successJson("已经保存过收货地址", 1);
+        }
+        return ResJson.successJson("还未保存过收货地址", 0);
     }
 
 }

@@ -47,6 +47,6 @@ public class Customer {
 
     private Boolean whetherAuthInfo;
 
-    private Boolean whetherFillShippingAddress;
+    private Boolean whetherFillDeliveryInfo;
 
 }

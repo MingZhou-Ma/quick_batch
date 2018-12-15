@@ -63,6 +63,11 @@ public class CustomerController {
         return customerService.saveCustomerDeliveryInfo(jsonObject);
     }
 
+    @RequestMapping(value = "/api/customer/whether/deliveryInfo/fill", method = RequestMethod.POST)
+    public ResJson whetherFillDeliveryInfo(@RequestBody JSONObject jsonObject) {
+        return customerService.whetherFillDeliveryInfo(jsonObject);
+    }
+
     @RequestMapping(value = "/api/customer/winningRecord/get", method = RequestMethod.POST)
     public ResJson getMyWinningRecord(@RequestBody JSONObject jsonObject) {
         return winningRecordService.getMyWinningRecord(jsonObject);

@@ -24,4 +24,6 @@ public interface CustomerService {
 
     ResJson saveCustomerDeliveryInfo(JSONObject jsonObject);
 
+    ResJson whetherFillDeliveryInfo(JSONObject jsonObject);
+
 }
