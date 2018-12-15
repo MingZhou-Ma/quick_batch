@@ -57,7 +57,6 @@ public class FriendBoostServiceImpl implements FriendBoostService {
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
-        //Customer initiator = customerJpa.getOne(id);
         Customer initiator = null;
         Optional<Customer> optional = customerJpa.findById(id);
         if (optional.isPresent()) {
@@ -67,7 +66,6 @@ public class FriendBoostServiceImpl implements FriendBoostService {
             return ResJson.failJson(4000, "活动发起者不存在", null);
         }
         if (customer.getOpenid().equals(initiator.getOpenid())) {
-            //return ResJson.failJson(4000, "不能给自己助力", null);
             HashMap<String, Object> map = new HashMap<>();
             map.put("alreadyBoost", 2);
             return ResJson.successJson("不能给自己助力", map);
@@ -89,18 +87,20 @@ public class FriendBoostServiceImpl implements FriendBoostService {
         friendBoostJpa.save(friendBoost);
 
         // 助力完获取代金券
-        //Prize prize = prizeJpa.getOne(9);
         Prize prize = null;
         Optional<Prize> prizeOptional = prizeJpa.findById(9);
         if (prizeOptional.isPresent()) {
             prize = prizeOptional.get();
         }
-        WinningRecord winningRecord = new WinningRecord();
-        winningRecord.setCode(RandomUtil.generateString(6));
-        winningRecord.setCreateTime(new Date());
-        winningRecord.setPrize(prize);
-        winningRecord.setCustomer(customer);
-        winningRecordJpa.save(winningRecord);
+        WinningRecord winningRecord = winningRecordJpa.findByCustomerAndPrize(customer, prize);
+        if (null == winningRecord) {
+            winningRecord = new WinningRecord();
+            winningRecord.setCode(RandomUtil.generateString(6));
+            winningRecord.setCreateTime(new Date());
+            winningRecord.setPrize(prize);
+            winningRecord.setCustomer(customer);
+            winningRecordJpa.save(winningRecord);
+        }
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("winningRecord", winningRecord);
