@@ -92,10 +92,10 @@ public class LotteryServiceImpl implements LotteryService {
         //LotteryOpportunityRecord lotteryOpportunityRecord = lotteryOpportunityRecordJpa.findByBoostIntervalAndCustomer(boostInterval, customer);
             // 每个客户最多只有3次抽奖机会
             if (customer.getLotteryOpportunity() + customer.getUsedLotteryOpportunity() < 3) {
-                LotteryOpportunityRecord lotteryOpportunityRecord = new LotteryOpportunityRecord();
+                //LotteryOpportunityRecord lotteryOpportunityRecord = new LotteryOpportunityRecord();
                 //lotteryOpportunityRecord.setBoostInterval(boostInterval);
-                lotteryOpportunityRecord.setCustomer(customer);
-                lotteryOpportunityRecordJpa.save(lotteryOpportunityRecord);
+                //lotteryOpportunityRecord.setCustomer(customer);
+                //lotteryOpportunityRecordJpa.save(lotteryOpportunityRecord);
 
                 customer.setLotteryOpportunity(customer.getLotteryOpportunity() + 1);
                 customerJpa.save(customer);
