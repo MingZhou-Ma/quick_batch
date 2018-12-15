@@ -101,12 +101,14 @@ public class CustomerServiceImpl implements CustomerService {
     public ResJson saveCustomerAuthInfo(JSONObject jsonObject) {
         String token = jsonObject.getString("token");
         String nickname = jsonObject.getString("nickname");
+        String avatar = jsonObject.getString("avatar");
 
         Customer customer = tokenService.getCustomerByToken(token);
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
         customer.setNickname(nickname);
+        customer.setAvatar(avatar);
         customer.setWhetherAuthInfo(true);
         customerJpa.save(customer);
 

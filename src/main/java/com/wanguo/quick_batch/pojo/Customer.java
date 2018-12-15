@@ -27,6 +27,8 @@ public class Customer {
 
     private String nickname;
 
+    private String avatar;
+
     private String phone;
 
     private Date createTime;
