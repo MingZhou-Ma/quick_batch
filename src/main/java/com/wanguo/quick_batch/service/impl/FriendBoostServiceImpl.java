@@ -112,15 +112,30 @@ public class FriendBoostServiceImpl implements FriendBoostService {
     @Override
     public ResJson getBoostNum(JSONObject jsonObject) {
         String token = jsonObject.getString("token");
+        Integer id = jsonObject.getInteger("id");
 
         Customer customer = tokenService.getCustomerByToken(token);
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
-        List<FriendBoost> list = friendBoostJpa.findAllByInitiator(customer);
-        if (null != list && !list.isEmpty()) {
-            return ResJson.successJson("get boost num success", list.size());
+
+        Customer initiator = null;
+        Optional<Customer> optional = customerJpa.findById(id);
+        if (optional.isPresent()) {
+            initiator = optional.get();
         }
-        return ResJson.successJson("get boost num success", 0);
+        if (null == initiator) {
+            return ResJson.failJson(4000, "活动发起者不存在", null);
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        List<FriendBoost> list = friendBoostJpa.findAllByInitiator(initiator);
+        if (null != list && !list.isEmpty()) {
+            map.put("num", list.size());
+            map.put("openId", initiator.getOpenid());
+            return ResJson.successJson("get boost num success", map);
+        }
+        map.put("num", 0);
+        map.put("openId", initiator.getOpenid());
+        return ResJson.successJson("get boost num success", map);
     }
 }
