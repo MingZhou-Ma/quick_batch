@@ -66,6 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setUsedLotteryOpportunity(0);
                 customer.setWhetherWinning(false);
                 customer.setWhetherAuthInfo(false);
+                customer.setWhetherFillShippingAddress(false);
                 customer.setCreateTime(new Date());
             } else {
                 customer.setSessionKey(sessionKey);
@@ -202,9 +203,14 @@ public class CustomerServiceImpl implements CustomerService {
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
+        if (customer.getWhetherFillShippingAddress()) {
+            return ResJson.failJson(4000, "已经保存过收货地址", null);
+        }
+
         customer.setReceiver(receiver);
         customer.setContactNumber(contactNumber);
         customer.setShippingAddress(shippingAddress);
+        customer.setWhetherFillShippingAddress(true);
         customerJpa.save(customer);
 
         AccessToken accessToken = tokenService.getAccessToken(token);
