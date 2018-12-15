@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 描述：
@@ -55,17 +57,27 @@ public class FriendBoostServiceImpl implements FriendBoostService {
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
-        Customer initiator = customerJpa.getOne(id);
+        //Customer initiator = customerJpa.getOne(id);
+        Customer initiator = null;
+        Optional<Customer> optional = customerJpa.findById(id);
+        if (optional.isPresent()) {
+            initiator = optional.get();
+        }
         if (null == initiator) {
             return ResJson.failJson(4000, "活动发起者不存在", null);
         }
-        if (customer == initiator) {
+        if (customer.getOpenid().equals(initiator.getOpenid())) {
             return ResJson.failJson(4000, "不能给自己助力", null);
         }
 
         FriendBoost friendBoost = friendBoostJpa.findByInitiatorAndBooster(initiator, customer);
         if (null != friendBoost) {
-            return ResJson.successJson("已经助力过了");
+            Prize prize = prizeJpa.findPrizeById(9);
+            WinningRecord winningRecord = winningRecordJpa.findByCustomerAndPrize(customer, prize);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("winningRecord", winningRecord);
+            map.put("alreadyBoost", 1);
+            return ResJson.successJson("已经助力过了", map);
         }
         friendBoost = new FriendBoost();
         friendBoost.setCreateTime(new Date());
@@ -74,8 +86,12 @@ public class FriendBoostServiceImpl implements FriendBoostService {
         friendBoostJpa.save(friendBoost);
 
         // 助力完获取代金券
-        Prize prize = prizeJpa.getOne(9);
-
+        //Prize prize = prizeJpa.getOne(9);
+        Prize prize = null;
+        Optional<Prize> prizeOptional = prizeJpa.findById(9);
+        if (prizeOptional.isPresent()) {
+            prize = prizeOptional.get();
+        }
         WinningRecord winningRecord = new WinningRecord();
         winningRecord.setCode(RandomUtil.generateString(6));
         winningRecord.setCreateTime(new Date());
@@ -83,7 +99,11 @@ public class FriendBoostServiceImpl implements FriendBoostService {
         winningRecord.setCustomer(customer);
         winningRecordJpa.save(winningRecord);
 
-        return ResJson.successJson("助力成功", winningRecord);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("winningRecord", winningRecord);
+        map.put("alreadyBoost", 0);
+
+        return ResJson.successJson("助力成功", map);
     }
 
     @Override

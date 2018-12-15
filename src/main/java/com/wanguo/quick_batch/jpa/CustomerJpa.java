@@ -17,4 +17,6 @@ public interface CustomerJpa extends JpaRepository<Customer, Integer>, JpaSpecif
 
     List<Customer> findAllByPhone(String phone);
 
+    Customer findCustomerById(Integer id);
+
 }
