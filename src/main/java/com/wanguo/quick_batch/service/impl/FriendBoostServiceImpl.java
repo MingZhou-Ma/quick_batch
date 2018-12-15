@@ -67,7 +67,10 @@ public class FriendBoostServiceImpl implements FriendBoostService {
             return ResJson.failJson(4000, "活动发起者不存在", null);
         }
         if (customer.getOpenid().equals(initiator.getOpenid())) {
-            return ResJson.failJson(4000, "不能给自己助力", null);
+            //return ResJson.failJson(4000, "不能给自己助力", null);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("alreadyBoost", 2);
+            return ResJson.successJson("不能给自己助力", map);
         }
 
         FriendBoost friendBoost = friendBoostJpa.findByInitiatorAndBooster(initiator, customer);
