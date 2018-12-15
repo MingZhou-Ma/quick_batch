@@ -204,7 +204,7 @@ public class CustomerServiceImpl implements CustomerService {
             return ResJson.errorAccessToken();
         }
         if (customer.getWhetherFillShippingAddress()) {
-            return ResJson.failJson(4000, "已经保存过收货地址", null);
+            return ResJson.failJson(4000, "已经保存过收货地址", customer);
         }
 
         customer.setReceiver(receiver);
