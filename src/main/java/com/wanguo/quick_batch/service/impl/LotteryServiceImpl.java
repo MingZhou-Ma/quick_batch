@@ -69,7 +69,7 @@ public class LotteryServiceImpl implements LotteryService {
             return ResJson.errorAccessToken();
         }
 
-        LotteryOpportunityRecord lotteryOpportunityRecord = lotteryOpportunityRecordJpa.findByBoostIntervalAndCustomer(boostInterval, customer);
+        /*LotteryOpportunityRecord lotteryOpportunityRecord = lotteryOpportunityRecordJpa.findByBoostIntervalAndCustomer(boostInterval, customer);
         if (null == lotteryOpportunityRecord) {
             // 每个客户最多只有3次抽奖机会
             if (customer.getLotteryOpportunity() + customer.getUsedLotteryOpportunity() < 3) {
@@ -87,7 +87,26 @@ public class LotteryServiceImpl implements LotteryService {
                     tokenService.saveAccessToken(accessToken);
                 }
             }
-        }
+        }*/
+
+        //LotteryOpportunityRecord lotteryOpportunityRecord = lotteryOpportunityRecordJpa.findByBoostIntervalAndCustomer(boostInterval, customer);
+            // 每个客户最多只有3次抽奖机会
+            if (customer.getLotteryOpportunity() + customer.getUsedLotteryOpportunity() < 3) {
+                LotteryOpportunityRecord lotteryOpportunityRecord = new LotteryOpportunityRecord();
+                lotteryOpportunityRecord.setBoostInterval(boostInterval);
+                lotteryOpportunityRecord.setCustomer(customer);
+                lotteryOpportunityRecordJpa.save(lotteryOpportunityRecord);
+
+                customer.setLotteryOpportunity(customer.getLotteryOpportunity() + 1);
+                customerJpa.save(customer);
+
+                AccessToken accessToken = tokenService.getAccessToken(token);
+                if (null != accessToken) {
+                    accessToken.setCustomer(customer);
+                    tokenService.saveAccessToken(accessToken);
+                }
+            }
+        //}
 
         return ResJson.successJson("obtain lottery opportunity success");
     }
