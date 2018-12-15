@@ -18,7 +18,7 @@ public class LotteryOpportunityRecord {
     @PrimaryKeyJoinColumn
     private Integer id;
 
-    private String boostInterval;
+    //private String boostInterval;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")

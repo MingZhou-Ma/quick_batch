@@ -62,7 +62,7 @@ public class LotteryServiceImpl implements LotteryService {
     @Override
     public ResJson obtainLotteryOpportunity(JSONObject jsonObject) {
         String token = jsonObject.getString("token");
-        String boostInterval = jsonObject.getString("boostInterval");
+        //String boostInterval = jsonObject.getString("boostInterval");
 
         Customer customer = tokenService.getCustomerByToken(token);
         if (null == customer) {
@@ -93,7 +93,7 @@ public class LotteryServiceImpl implements LotteryService {
             // 每个客户最多只有3次抽奖机会
             if (customer.getLotteryOpportunity() + customer.getUsedLotteryOpportunity() < 3) {
                 LotteryOpportunityRecord lotteryOpportunityRecord = new LotteryOpportunityRecord();
-                lotteryOpportunityRecord.setBoostInterval(boostInterval);
+                //lotteryOpportunityRecord.setBoostInterval(boostInterval);
                 lotteryOpportunityRecord.setCustomer(customer);
                 lotteryOpportunityRecordJpa.save(lotteryOpportunityRecord);
 

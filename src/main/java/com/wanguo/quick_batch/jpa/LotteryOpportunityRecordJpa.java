@@ -12,6 +12,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  */
 public interface LotteryOpportunityRecordJpa extends JpaRepository<LotteryOpportunityRecord, Integer>, JpaSpecificationExecutor<LotteryOpportunityRecord> {
 
-    LotteryOpportunityRecord findByBoostIntervalAndCustomer(String boostInterval, Customer customer);
+    //LotteryOpportunityRecord findByBoostIntervalAndCustomer(String boostInterval, Customer customer);
 
 }
