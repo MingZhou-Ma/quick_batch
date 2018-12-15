@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * 描述：
@@ -228,9 +229,14 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         if (customer.getWhetherFillDeliveryInfo()) {
-            return ResJson.successJson("已经保存过收货地址", 1);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("customer", customer);
+            map.put("status", 1);
+            return ResJson.successJson("已经保存过收货地址", map);
         }
-        return ResJson.successJson("还未保存过收货地址", 0);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("status", 0);
+        return ResJson.successJson("还未保存过收货地址", map);
     }
 
 }
