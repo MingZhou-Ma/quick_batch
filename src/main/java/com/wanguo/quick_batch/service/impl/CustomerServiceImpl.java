@@ -239,4 +239,19 @@ public class CustomerServiceImpl implements CustomerService {
         return ResJson.successJson("还未保存过收货地址", map);
     }
 
+    @Override
+    public ResJson getWeChatInterfaceCallCredentials(JSONObject jsonObject) {
+        String token = jsonObject.getString("token");
+
+        Customer customer = tokenService.getCustomerByToken(token);
+        if (null == customer) {
+            return ResJson.errorAccessToken();
+        }
+        String accessToken = WeChatInterfaceCallCredentials.getWeChatAccessToken();
+        if (StringUtils.isEmpty(accessToken)) {
+            return ResJson.failJson(4000, "获取微信接口调用凭证失败", null);
+        }
+        return ResJson.successJson("get weChat interface call credentials success", accessToken);
+    }
+
 }

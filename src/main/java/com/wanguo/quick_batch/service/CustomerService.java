@@ -26,4 +26,6 @@ public interface CustomerService {
 
     ResJson whetherFillDeliveryInfo(JSONObject jsonObject);
 
+    ResJson getWeChatInterfaceCallCredentials(JSONObject jsonObject);
+
 }

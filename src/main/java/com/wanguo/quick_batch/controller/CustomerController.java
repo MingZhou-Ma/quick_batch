@@ -73,4 +73,9 @@ public class CustomerController {
         return winningRecordService.getMyWinningRecord(jsonObject);
     }
 
+    @RequestMapping(value = "/api/customer/weChatInterfaceCallCredentials/get", method = RequestMethod.POST)
+    public ResJson getWeChatInterfaceCallCredentials(@RequestBody JSONObject jsonObject) {
+        return customerService.getWeChatInterfaceCallCredentials(jsonObject);
+    }
+
 }
