@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -109,8 +110,16 @@ public class CustomerServiceImpl implements CustomerService {
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
+
+        InputStream inputStream = OkHttpUtil.getInputStream(avatar);
+        String path = QiNiuUploadUtil.upload(inputStream);
+        System.out.println("路径:" + path);
+        if (StringUtils.isEmpty(path)) {
+            return ResJson.failJson(4000, "解析微信头像失败", null);
+        }
+
         customer.setNickname(nickname);
-        customer.setAvatar(avatar);
+        customer.setAvatar(path);
         customer.setWhetherAuthInfo(true);
         customerJpa.save(customer);
 

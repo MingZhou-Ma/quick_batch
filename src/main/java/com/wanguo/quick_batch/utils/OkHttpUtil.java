@@ -36,6 +36,21 @@ public class OkHttpUtil {
         return null;
     }
 
+    public static InputStream getInputStream(String url) {
+        Request request = new Request.Builder().url(url).build();
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                if (response.body() != null) {
+                    return response.body().byteStream();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static InputStream post(String url, String jsonParam) {
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonParam);
         Request request = new Request.Builder().url(url).post(body).build();
