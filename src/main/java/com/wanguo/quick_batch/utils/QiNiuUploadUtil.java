@@ -46,7 +46,7 @@ public class QiNiuUploadUtil {
     }
 
     // 上传凭证
-    private static String getUpToken() {
+    public static String getUpToken() {
         Auth auth = Auth.create(accessKey, secretKey);
         return auth.uploadToken(bucket);
     }
