@@ -7,12 +7,14 @@ import com.wanguo.quick_batch.pojo.Customer;
 import com.wanguo.quick_batch.service.CustomerService;
 import com.wanguo.quick_batch.service.TokenService;
 import com.wanguo.quick_batch.utils.*;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
@@ -147,6 +149,8 @@ public class CustomerServiceImpl implements CustomerService {
             return ResJson.failJson(4000, "解析微信头像失败", null);
         }
 
+        nickname = Base64.encodeBase64String(nickname.getBytes(StandardCharsets.UTF_8));
+        nickname = new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
         customer.setNickname(nickname);
         customer.setAvatar(path);
         customer.setWhetherAuthInfo(true);
