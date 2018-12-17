@@ -292,4 +292,49 @@ public class CustomerServiceImpl implements CustomerService {
         return ResJson.successJson("get weChat interface call credentials success", accessToken);
     }
 
+    @Override
+    public ResJson serviceNotice(JSONObject jsonObject) {
+        String token = jsonObject.getString("token");
+        Integer id = jsonObject.getInteger("id");
+        String template_id = jsonObject.getString("template_id");
+        String page = jsonObject.getString("page");
+        String form_id = jsonObject.getString("form_id");
+        Object data = jsonObject.get("data");
+        String color = jsonObject.getString("color");
+        String emphasis_keyword = jsonObject.getString("emphasis_keyword");
+
+        Customer customer = tokenService.getCustomerByToken(token);
+        if (null == customer) {
+            return ResJson.errorAccessToken();
+        }
+        Customer c = null;
+        Optional<Customer> optional = customerJpa.findById(id);
+        if (optional.isPresent()) {
+            c = optional.get();
+        }
+        if (null == c) {
+            return ResJson.failJson(4000, "通知对象不存在", null);
+        }
+
+        String accessToken = WeChatInterfaceCallCredentials.getWeChatAccessToken();
+        if (StringUtils.isEmpty(accessToken)) {
+            return ResJson.failJson(4000, "获取微信接口调用凭证失败", null);
+        }
+
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("touser", c.getOpenid());
+        paramObject.put("template_id", template_id);
+        paramObject.put("page", page);
+        paramObject.put("form_id", form_id);
+        paramObject.put("data", data);
+        paramObject.put("color", color);
+        paramObject.put("emphasis_keyword", emphasis_keyword);
+        String paramString = paramObject.toJSONString();
+        InputStream result = OkHttpUtil.post("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + accessToken, paramString);
+        if (null == result) {
+            return ResJson.failJson(4000, "发送服务通知失败", null);
+        }
+        return ResJson.successJson("发送服务通知成功");
+    }
+
 }

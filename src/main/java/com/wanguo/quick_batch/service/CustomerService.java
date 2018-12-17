@@ -32,4 +32,6 @@ public interface CustomerService {
 
     ResJson getWeChatInterfaceCallCredentials(JSONObject jsonObject);
 
+    ResJson serviceNotice(JSONObject jsonObject);
+
 }

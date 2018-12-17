@@ -88,4 +88,9 @@ public class CustomerController {
         return customerService.getWeChatInterfaceCallCredentials(jsonObject);
     }
 
+    @RequestMapping(value = "/api/customer/service/notice", method = RequestMethod.POST)
+    public ResJson serviceNotice(@RequestBody JSONObject jsonObject) {
+        return customerService.serviceNotice(jsonObject);
+    }
+
 }
