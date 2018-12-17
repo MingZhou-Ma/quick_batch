@@ -29,7 +29,7 @@ public class Customer {
 
     private String nickname;
 
-    private String nicknameUtf8;
+    //private String nicknameUtf8;
 
     private String avatar;
 
@@ -53,7 +53,7 @@ public class Customer {
 
     private Boolean whetherFillDeliveryInfo;
 
-    public String getNicknameUtf8() {
+    public String getNickname() {
         //UTF-8解码后的字符
         //return URLDecoder.decode(nickname, "utf-8");
         return new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
