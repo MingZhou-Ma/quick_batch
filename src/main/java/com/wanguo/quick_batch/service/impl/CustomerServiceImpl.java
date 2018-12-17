@@ -112,6 +112,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
+        customer.setNicknameUtf8(new String(Base64.decodeBase64(customer.getNickname()), StandardCharsets.UTF_8));
         return ResJson.successJson("get customer info success", customer);
     }
 
@@ -129,6 +130,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (optional.isPresent()) {
             other = optional.get();
         }
+        other.setNicknameUtf8(new String(Base64.decodeBase64(other.getNickname()), StandardCharsets.UTF_8));
         return ResJson.successJson("get customer info by id success", other);
     }
 
