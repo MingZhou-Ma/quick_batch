@@ -155,7 +155,7 @@ public class CustomerServiceImpl implements CustomerService {
         //nickname = new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
         System.out.println("昵称：" + nickname);
 
-        customer.setNickname(nickname);
+        customer.setNicknameBase64(nickname);
         customer.setAvatar(path);
         customer.setWhetherAuthInfo(true);
         customerJpa.save(customer);
