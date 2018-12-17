@@ -112,7 +112,6 @@ public class CustomerServiceImpl implements CustomerService {
         if (null == customer) {
             return ResJson.errorAccessToken();
         }
-        customer.setNicknameUtf8(new String(Base64.decodeBase64(customer.getNickname()), StandardCharsets.UTF_8));
         return ResJson.successJson("get customer info success", customer);
     }
 
@@ -130,7 +129,6 @@ public class CustomerServiceImpl implements CustomerService {
         if (optional.isPresent()) {
             other = optional.get();
         }
-        other.setNicknameUtf8(new String(Base64.decodeBase64(other.getNickname()), StandardCharsets.UTF_8));
         return ResJson.successJson("get customer info by id success", other);
     }
 
@@ -153,10 +151,14 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         //nickname = URLEncoder.encode(nickname, "utf-8");
-        nickname = Base64.encodeBase64String(nickname.getBytes(StandardCharsets.UTF_8));
+
         //nickname = new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
         System.out.println("昵称：" + nickname);
 
+        nickname = Base64.encodeBase64String(nickname.getBytes(StandardCharsets.UTF_8));
+        //customer.setNickname(nickname);  // base64
+        customer.setNicknameFuhao(nickname);
+        nickname = new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
         customer.setNickname(nickname);
         customer.setAvatar(path);
         customer.setWhetherAuthInfo(true);

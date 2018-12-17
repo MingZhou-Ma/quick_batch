@@ -29,9 +29,11 @@ public class Customer {
     @JsonIgnore
     private String sessionKey;
 
-    private String nickname;
 
-    private String nicknameUtf8;
+    private String nicknameFuhao;
+
+    @Transient
+    private String nickname;
 
     private String avatar;
 
