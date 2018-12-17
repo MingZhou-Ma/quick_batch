@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * 描述：
@@ -98,6 +99,23 @@ public class CustomerServiceImpl implements CustomerService {
             return ResJson.errorAccessToken();
         }
         return ResJson.successJson("get customer info success", customer);
+    }
+
+    @Override
+    public ResJson getOtherCustomerInfo(JSONObject jsonObject) {
+        String token = jsonObject.getString("token");
+        Integer id = jsonObject.getInteger("id");
+
+        Customer customer = tokenService.getCustomerByToken(token);
+        if (null == customer) {
+            return ResJson.errorAccessToken();
+        }
+        Customer other = null;
+        Optional<Customer> optional = customerJpa.findById(id);
+        if (optional.isPresent()) {
+            other = optional.get();
+        }
+        return ResJson.successJson("get customer info by id success", other);
     }
 
     @Override
