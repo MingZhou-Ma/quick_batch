@@ -33,6 +33,11 @@ public class CustomerController {
         return customerService.login(jsonObject);
     }
 
+    @RequestMapping(value = "/api/customer/accessToken/check", method = RequestMethod.POST)
+    public ResJson checkAccessToken(@RequestBody JSONObject jsonObject) {
+        return customerService.checkAccessToken(jsonObject);
+    }
+
     @RequestMapping(value = "/api/customer/info/get", method = RequestMethod.POST)
     public ResJson getCustomerInfo(@RequestBody JSONObject jsonObject) {
         return customerService.getCustomerInfo(jsonObject);

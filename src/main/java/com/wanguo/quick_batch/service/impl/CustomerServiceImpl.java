@@ -91,6 +91,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public ResJson checkAccessToken(JSONObject jsonObject) {
+        String token = jsonObject.getString("token");
+
+        AccessToken accessToken = tokenService.getAccessToken(token);
+        if (null == accessToken) {
+            return ResJson.errorAccessToken();
+        }
+        return ResJson.successJson("success");
+    }
+
+    @Override
     public ResJson getCustomerInfo(JSONObject jsonObject) {
         String token = jsonObject.getString("token");
 

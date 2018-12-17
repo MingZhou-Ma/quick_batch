@@ -12,6 +12,8 @@ public interface CustomerService {
 
     ResJson login(JSONObject jsonObject);
 
+    ResJson checkAccessToken(JSONObject jsonObject);
+
     ResJson getCustomerInfo(JSONObject jsonObject);
 
     ResJson getOtherCustomerInfo(JSONObject jsonObject);
