@@ -5,19 +5,13 @@ import com.wanguo.quick_batch.jpa.*;
 import com.wanguo.quick_batch.pojo.*;
 import com.wanguo.quick_batch.service.LotteryService;
 import com.wanguo.quick_batch.service.TokenService;
-import com.wanguo.quick_batch.utils.AccessToken;
-import com.wanguo.quick_batch.utils.LotteryUtil;
-import com.wanguo.quick_batch.utils.RandomUtil;
-import com.wanguo.quick_batch.utils.ResJson;
+import com.wanguo.quick_batch.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 描述：
@@ -62,11 +56,20 @@ public class LotteryServiceImpl implements LotteryService {
     @Override
     public ResJson obtainLotteryOpportunity(JSONObject jsonObject) {
         String token = jsonObject.getString("token");
+        Integer id = jsonObject.getInteger("id");
         //String boostInterval = jsonObject.getString("boostInterval");
 
         Customer customer = tokenService.getCustomerByToken(token);
         if (null == customer) {
             return ResJson.errorAccessToken();
+        }
+        Customer initiator = null;
+        Optional<Customer> optional = customerJpa.findById(id);
+        if (optional.isPresent()) {
+            initiator = optional.get();
+        }
+        if (null == initiator) {
+            return ResJson.failJson(4000, "活动发起者不存在", null);
         }
 
         /*LotteryOpportunityRecord lotteryOpportunityRecord = lotteryOpportunityRecordJpa.findByBoostIntervalAndCustomer(boostInterval, customer);
@@ -91,18 +94,18 @@ public class LotteryServiceImpl implements LotteryService {
 
         //LotteryOpportunityRecord lotteryOpportunityRecord = lotteryOpportunityRecordJpa.findByBoostIntervalAndCustomer(boostInterval, customer);
             // 每个客户最多只有3次抽奖机会
-            if (customer.getLotteryOpportunity() + customer.getUsedLotteryOpportunity() < 3) {
+            if (initiator.getLotteryOpportunity() + initiator.getUsedLotteryOpportunity() < 3) {
                 //LotteryOpportunityRecord lotteryOpportunityRecord = new LotteryOpportunityRecord();
                 //lotteryOpportunityRecord.setBoostInterval(boostInterval);
                 //lotteryOpportunityRecord.setCustomer(customer);
                 //lotteryOpportunityRecordJpa.save(lotteryOpportunityRecord);
 
-                customer.setLotteryOpportunity(customer.getLotteryOpportunity() + 1);
-                customerJpa.save(customer);
+                initiator.setLotteryOpportunity(initiator.getLotteryOpportunity() + 1);
+                customerJpa.save(initiator);
 
-                AccessToken accessToken = tokenService.getAccessToken(token);
+                AccessToken accessToken = tokenService.getAccessToken(MD5Util.md5(AccessToken.CUSTOMER_TOKEN_SALT + ":" + initiator.getOpenid()));
                 if (null != accessToken) {
-                    accessToken.setCustomer(customer);
+                    accessToken.setCustomer(initiator);
                     tokenService.saveAccessToken(accessToken);
                 }
             }
