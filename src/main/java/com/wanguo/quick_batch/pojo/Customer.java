@@ -2,8 +2,10 @@ package com.wanguo.quick_batch.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.persistence.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -27,6 +29,8 @@ public class Customer {
 
     private String nickname;
 
+    private String nicknameUtf8;
+
     private String avatar;
 
     private String phone;
@@ -48,5 +52,11 @@ public class Customer {
     private Boolean whetherAuthInfo;
 
     private Boolean whetherFillDeliveryInfo;
+
+    public String getNicknameUtf8() {
+        //UTF-8解码后的字符
+        //return URLDecoder.decode(nickname, "utf-8");
+        return new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
+    }
 
 }

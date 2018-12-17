@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
@@ -149,8 +150,11 @@ public class CustomerServiceImpl implements CustomerService {
             return ResJson.failJson(4000, "解析微信头像失败", null);
         }
 
+        //nickname = URLEncoder.encode(nickname, "utf-8");
         nickname = Base64.encodeBase64String(nickname.getBytes(StandardCharsets.UTF_8));
-        nickname = new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
+        //nickname = new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
+        System.out.println("昵称：" + nickname);
+
         customer.setNickname(nickname);
         customer.setAvatar(path);
         customer.setWhetherAuthInfo(true);
