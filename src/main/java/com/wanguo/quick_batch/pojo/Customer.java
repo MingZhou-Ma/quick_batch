@@ -53,10 +53,10 @@ public class Customer {
 
     private Boolean whetherFillDeliveryInfo;
 
-    public String getNickname() {
-        //UTF-8解码后的字符
-        //return URLDecoder.decode(nickname, "utf-8");
-        return new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
-    }
+//    public String getNickname() {
+//        //UTF-8解码后的字符
+//        //return URLDecoder.decode(nickname, "utf-8");
+//        return new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
+//    }
 
 }
