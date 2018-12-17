@@ -5,6 +5,8 @@ import lombok.Data;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.persistence.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
@@ -27,12 +29,9 @@ public class Customer {
     @JsonIgnore
     private String sessionKey;
 
-    //
-    private String nicknameBase64;
-
-    // 解码后
     private String nickname;
 
+    private String nicknameUtf8;
 
     private String avatar;
 
@@ -56,10 +55,10 @@ public class Customer {
 
     private Boolean whetherFillDeliveryInfo;
 
-    public String getNickname() {
+    public String getNicknameUtf8() {
         //UTF-8解码后的字符
         //return URLDecoder.decode(nickname, "utf-8");
-        return new String(Base64.decodeBase64(nicknameBase64), StandardCharsets.UTF_8);
+        return new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
     }
 
 }
