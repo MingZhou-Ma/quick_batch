@@ -136,7 +136,7 @@ public class LotteryServiceImpl implements LotteryService {
 
             HashMap<String, Object> map = new HashMap<>();
             map.put("index", 7);
-            map.put("prize", prizeJpa.findPrizeById(7));
+            map.put("prize", prizeJpa.findPrizeById(8));
             return ResJson.successJson("抽奖成功", map);
         }
 
@@ -214,7 +214,7 @@ public class LotteryServiceImpl implements LotteryService {
                 }
 
                 map.put("index", 7);
-                map.put("prize", prizeJpa.findPrizeById(7));
+                map.put("prize", prizeJpa.findPrizeById(8));
                 return ResJson.successJson("抽奖成功", map);
             } else {
                 WinningRecord winningRecord = new WinningRecord();
