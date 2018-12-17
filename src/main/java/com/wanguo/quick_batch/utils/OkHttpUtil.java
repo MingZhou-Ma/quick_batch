@@ -67,5 +67,21 @@ public class OkHttpUtil {
         return null;
     }
 
+    public static String s_post(String url, String jsonParam) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonParam);
+        Request request = new Request.Builder().url(url).post(body).build();
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                if (response.body() != null) {
+                    return response.body().string();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

@@ -93,4 +93,9 @@ public class CustomerController {
         return customerService.serviceNotice(jsonObject);
     }
 
+    @RequestMapping(value = "/api/customer/formId/save", method = RequestMethod.POST)
+    public ResJson saveFormId(@RequestBody JSONObject jsonObject) {
+        return customerService.saveFormId(jsonObject);
+    }
+
 }

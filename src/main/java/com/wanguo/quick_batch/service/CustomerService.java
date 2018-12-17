@@ -34,4 +34,6 @@ public interface CustomerService {
 
     ResJson serviceNotice(JSONObject jsonObject);
 
+    ResJson saveFormId(JSONObject jsonObject);
+
 }

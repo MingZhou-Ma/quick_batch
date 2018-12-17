@@ -57,6 +57,8 @@ public class Customer {
 
     private Boolean whetherFillDeliveryInfo;
 
+    private String formId;
+
     /*public String getNicknameUtf8() {
         //UTF-8解码后的字符
         //return URLDecoder.decode(nickname, "utf-8");

@@ -314,7 +314,7 @@ public class CustomerServiceImpl implements CustomerService {
         Integer id = jsonObject.getInteger("id");
         String template_id = jsonObject.getString("template_id");
         String page = jsonObject.getString("page");
-        String form_id = jsonObject.getString("form_id");
+        //String form_id = jsonObject.getString("form_id");
         Object data = jsonObject.get("data");
         String color = jsonObject.getString("color");
         String emphasis_keyword = jsonObject.getString("emphasis_keyword");
@@ -339,18 +339,48 @@ public class CustomerServiceImpl implements CustomerService {
 
         JSONObject paramObject = new JSONObject();
         paramObject.put("touser", c.getOpenid());
+        //paramObject.put("touser", "octT64kMNXZpYwtUJsSjfKqtb23k");
         paramObject.put("template_id", template_id);
         paramObject.put("page", page);
-        paramObject.put("form_id", form_id);
+        paramObject.put("form_id", c.getFormId());
+        //paramObject.put("form_id", "c3e4f32ef20c403176049b15a77ff9cb");
         paramObject.put("data", data);
         paramObject.put("color", color);
         paramObject.put("emphasis_keyword", emphasis_keyword);
         String paramString = paramObject.toJSONString();
-        InputStream result = OkHttpUtil.post("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + accessToken, paramString);
+        String result = OkHttpUtil.s_post("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + accessToken, paramString);
         if (null == result) {
             return ResJson.failJson(4000, "发送服务通知失败", null);
         }
-        return ResJson.successJson("发送服务通知成功");
+
+        /*JSONObject obj = JSON.parseObject(result);
+        String errcode = obj.getString("errcode");
+        String errmsg = obj.getString("errmsg");
+        System.out.println("通知结果1:" + result);
+        System.out.println("通知结果2:" + errcode);
+        System.out.println("通知结果3:" + errmsg);*/
+        return ResJson.successJson("发送服务通知成功", result);
+    }
+
+    @Override
+    public ResJson saveFormId(JSONObject jsonObject) {
+        String token = jsonObject.getString("token");
+        String formId = jsonObject.getString("formId");
+
+        Customer customer = tokenService.getCustomerByToken(token);
+        if (null == customer) {
+            return ResJson.errorAccessToken();
+        }
+        customer.setFormId(formId);
+        customerJpa.save(customer);
+
+        AccessToken accessToken = tokenService.getAccessToken(token);
+        if (null != accessToken) {
+            accessToken.setCustomer(customer);
+            tokenService.saveAccessToken(accessToken);
+        }
+
+        return ResJson.successJson("save form id success");
     }
 
 }
