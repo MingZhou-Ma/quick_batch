@@ -129,7 +129,11 @@ public class CustomerServiceImpl implements CustomerService {
         if (optional.isPresent()) {
             other = optional.get();
         }
-        return ResJson.successJson("get customer info by id success", other);
+        if (null == other) {
+            return ResJson.failJson(4000, "用户不存在", null);
+        }
+        Customer customerByToken = tokenService.getCustomerByToken(MD5Util.md5(AccessToken.CUSTOMER_TOKEN_SALT + ":" + other.getOpenid()));
+        return ResJson.successJson("get customer info by id success", customerByToken);
     }
 
     @Override
