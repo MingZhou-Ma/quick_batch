@@ -112,7 +112,7 @@ public class LotteryServiceImpl implements LotteryService {
     }
 
     @Override
-    public ResJson lottery(JSONObject jsonObject) {
+    public synchronized ResJson lottery(JSONObject jsonObject) {
         String token = jsonObject.getString("token");
 
         Customer customer = tokenService.getCustomerByToken(token);
