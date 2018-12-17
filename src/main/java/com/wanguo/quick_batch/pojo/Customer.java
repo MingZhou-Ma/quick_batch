@@ -30,7 +30,7 @@ public class Customer {
     private String sessionKey;
 
 
-    private String nicknameFuhao;
+    private String nicknameBase64;
 
     @Transient
     private String nickname;

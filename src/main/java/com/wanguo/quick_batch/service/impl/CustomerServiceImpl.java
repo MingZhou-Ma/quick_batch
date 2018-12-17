@@ -157,7 +157,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         nickname = Base64.encodeBase64String(nickname.getBytes(StandardCharsets.UTF_8));
         //customer.setNickname(nickname);  // base64
-        customer.setNicknameFuhao(nickname);
+        customer.setNicknameBase64(nickname);
         nickname = new String(Base64.decodeBase64(nickname), StandardCharsets.UTF_8);
         customer.setNickname(nickname);
         customer.setAvatar(path);
