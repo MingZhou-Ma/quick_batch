@@ -32,7 +32,7 @@ public class Customer {
 
     private String nicknameBase64;
 
-    @Transient
+    //@Transient
     private String nickname;
 
     private String avatar;
