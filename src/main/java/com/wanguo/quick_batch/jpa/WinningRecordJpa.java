@@ -19,4 +19,6 @@ public interface WinningRecordJpa extends JpaRepository<WinningRecord, Integer>,
 
     WinningRecord findByCustomerAndPrize(Customer customer, Prize prize);
 
+    List<WinningRecord> findAllByOrderByCreateTimeDesc();
+
 }

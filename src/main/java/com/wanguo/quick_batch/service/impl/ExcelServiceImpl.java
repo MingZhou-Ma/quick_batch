@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -32,9 +33,10 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Override
     public ResJson exportXlsx(HttpServletResponse response) {
-        List<WinningRecord> list = winningRecordJpa.findAll();
+        List<WinningRecord> list = winningRecordJpa.findAllByOrderByCreateTimeDesc();
         String[] headTitle = {"姓名", "电话号码", "收货地址", "中奖物品", "券码", "中奖时间"};
         String[][] data = new String[list.size()][headTitle.length];
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (int i = 0; i < list.size(); i++) {
             WinningRecord winningRecord = list.get(i);
             data[i][0] = winningRecord.getCustomer().getReceiver();
@@ -42,7 +44,7 @@ public class ExcelServiceImpl implements ExcelService {
             data[i][2] = winningRecord.getCustomer().getShippingAddress();
             data[i][3] = winningRecord.getPrize().getName();
             data[i][4] = winningRecord.getCode();
-            data[i][5] = winningRecord.getCreateTime().toString();
+            data[i][5] = sdf.format(winningRecord.getCreateTime());
         }
         try {
             ExcelUtil.exportXlsx("中奖记录", "中奖列表", headTitle, data, response);
