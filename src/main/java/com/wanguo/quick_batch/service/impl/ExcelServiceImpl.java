@@ -33,7 +33,7 @@ public class ExcelServiceImpl implements ExcelService {
     @Override
     public ResJson exportXlsx(HttpServletResponse response) {
         List<WinningRecord> list = winningRecordJpa.findAll();
-        String[] headTitle = {"姓名", "电话号码", "收货地址", "中奖物品", "券码"};
+        String[] headTitle = {"姓名", "电话号码", "收货地址", "中奖物品", "券码", "中奖时间"};
         String[][] data = new String[list.size()][headTitle.length];
         for (int i = 0; i < list.size(); i++) {
             WinningRecord winningRecord = list.get(i);
@@ -42,6 +42,7 @@ public class ExcelServiceImpl implements ExcelService {
             data[i][2] = winningRecord.getCustomer().getShippingAddress();
             data[i][3] = winningRecord.getPrize().getName();
             data[i][4] = winningRecord.getCode();
+            data[i][5] = winningRecord.getCreateTime().toString();
         }
         try {
             ExcelUtil.exportXlsx("中奖记录", "中奖列表", headTitle, data, response);
